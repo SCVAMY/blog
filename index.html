@@ -294,166 +294,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/11/test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/pig.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SCVAMY">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/07/11/test/" itemprop="url">test</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-07-11T21:54:59+08:00">
-                2022-07-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Words count in article&#58;</span>
-                
-                <span title="Words count in article">
-                  
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Reading time &asymp;</span>
-                
-                <span title="Reading time">
-                  
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-
-
-	<div>
-	
-	</div>
-
-	<div>
-      
-	</div>
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/11/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -579,7 +419,37 @@
         
           
             <p>浏览器是多进程的，有一个主控进程，以及每一个 tab 页面都会新开一个进程</p>
-<p>进程可能包括主控进程、插件进程、GPU等等</p>
+<p>进程可能包括主控进程、插件进程、GPU等等，主要有：</p>
+<ul>
+<li>Browser 进程：浏览器的主进程</li>
+<li>第三方插件进程</li>
+<li>GPU 进程：最多一个，用于 3D 绘制</li>
+<li>Render 进程</li>
+</ul>
+<h2 id="Render-进程的几大类子线程"><a href="#Render-进程的几大类子线程" class="headerlink" title="Render 进程的几大类子线程"></a>Render 进程的几大类子线程</h2><h3 id="Gui-线程"><a href="#Gui-线程" class="headerlink" title="Gui 线程"></a>Gui 线程</h3><ul>
+<li><p>负责渲染浏览器页面</p>
+<ul>
+<li>解析 HTML CSS，构建 DOM 树和 RenderObject 树</li>
+<li>布局和绘制</li>
+</ul>
+</li>
+<li><p>发生重绘或回流时，该线程就会执行</p>
+</li>
+<li><p>GUI 渲染线程与 JS 引擎线程互斥</p>
+<ul>
+<li>当 JS 引擎执行时 GUI 线程挂起，GUI 更新会被保存在一个队列中等待 JS 引擎空闲时立即被执行</li>
+</ul>
+</li>
+</ul>
+<h3 id="事件触发线程"><a href="#事件触发线程" class="headerlink" title="事件触发线程"></a>事件触发线程</h3><ul>
+<li>控制事件循环</li>
+<li>将对应异步任务回调添加到事件线程中</li>
+</ul>
+<h3 id="JS-引擎线程"><a href="#JS-引擎线程" class="headerlink" title="JS 引擎线程"></a>JS 引擎线程</h3><ul>
+<li>负责处理 JavaScript 脚本程序</li>
+<li>GUI 渲染线程与 JS 引擎线程是互斥，JS 执行的时间过长，会造成页面的渲染不连贯，导致页面渲染加载阻塞。</li>
+</ul>
+<p>下一篇：浏览器的渲染机制</p>
 
           
         
@@ -1783,7 +1653,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
